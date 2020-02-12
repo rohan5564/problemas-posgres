@@ -1,0 +1,33 @@
+/********************en psql (sql shell)***********************/
+CREATE USER INF3540 WITH PASSWORD 'tallerbd'
+SELECT * FROM CLIENTE;
+
+
+/********************en pgadmin********************************/
+GRANT SELECT, INSERT ON TABLE cliente TO inf3540;
+
+
+/********************en psql (sql shell)***********************/
+INSERT INTO cliente(cliente_id, rut, verificador, "primer apellido", "segundo apellido", nombres)
+VALUES((SELECT MAX(cliente_id)+1 FROM cliente), 16340712, 4, 'perez', 'perez', 'juanito juanito');
+SELECT * FROM cliente ORDER BY cliente_id DESC LIMIT 1;
+
+
+/********************en pgadmin********************************/
+GRANT SELECT, INSERT ON TABLE detalle_cliente TO inf3540;
+GRANT UPDATE("primer apellido", "segundo apellido") ON TABLE cliente TO inf3540;
+
+
+/********************en psql (sql shell)***********************/
+UPDATE cliente
+SET nombres = 'fulanito'
+WHERE cliente_id = (SELECT MAX(cliente_id) FROM cliente);
+UPDATE detalle_cliente
+SET "rango etario" = 'menor que 30'
+WHERE cliente_id = (SELECT MAX(cliente_id) FROM cliente);
+
+/********************en pgadmin********************************/
+CREATE OR REPLACE VIEW tabla_cupomax AS
+SELECT *
+FROM tarjeta;
+SELECT * FROM tabla_cupomax;
